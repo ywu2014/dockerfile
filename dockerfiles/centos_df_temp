@@ -1,0 +1,14 @@
+############################################
+# this is an Dockerfile template
+# use centos:last as base mirror
+
+# version : ywu123/testres:ub__v1
+# desc : 
+############################################
+
+FROM centos
+MAINTAINER ywu "yejunwu126@126.com"
+ENV REFRESHED_AT 2017-06-28
+RUN yum -q makecache
+
+

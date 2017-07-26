@@ -1,0 +1,11 @@
+version: '2'
+services:
+    mq1:
+        image: ywu123/testres:ub_activemq5.11.1_v1
+        restart: always
+        ports:
+            - 8161:8162
+        volumes:
+            - /home/ywu/docker/volumns/activemq/instance1/data/:/var/activemq/data/
+            - /home/ywu/docker/volumns/activemq/instance1/conf/activemq.xml:/usr/local/apache-activemq-5.11.1/conf/activemq.xml
+            - /home/ywu/docker/volumns/activemq/instance1/conf/jetty.xml:/usr/local/apache-activemq-5.11.1/conf/jetty.xml

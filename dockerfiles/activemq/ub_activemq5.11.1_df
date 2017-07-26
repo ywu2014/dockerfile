@@ -1,0 +1,33 @@
+############################################
+# use ywu123/testres:ub_jdk8_v1 as base mirror
+
+# version: ywu123/testres:ub_activemq5.11.1_v1
+# desc: 当前版本安装的apache-activemq-5.11.1-bin.tar.gz
+# build command: sudo docker build -f ub_activemq5.11.1_df -t ywu123/testres:ub_activemq5.11.1_v1 .
+############################################
+
+FROM ywu123/testres:ub_jdk8_v1
+MAINTAINER ywu "yejunwu126@126.com"
+ENV REFRESHED_AT 2017-07-20
+
+# activemq port
+ENV ACTIVEMQ_TCP=61616 ACTIVEMQ_AMQP=5672 ACTIVEMQ_STOMP=61613 ACTIVEMQ_MQTT=1883 ACTIVEMQ_WS=61614 ACTIVEMQ_UI=8161
+
+# 添加activemq安装文件,会自动解压
+ADD apache-activemq-5.11.1-bin.tar.gz /usr/local/
+
+# 配置环境
+# docker run启动后,环境变量会生效,但是ssh登录的,环境变量不会生效
+ENV ACTIVEMQ_HOME /usr/local/apache-activemq-5.11.1
+ENV activemq.conf /usr/local/apache-activemq-5.11.1/conf
+ENV activemq.data /var/activemq/data
+
+COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+
+WORKDIR $ACTIVEMQ_HOME 
+
+# 开放端口
+EXPOSE $ACTIVEMQ_TCP $ACTIVEMQ_AMQP $ACTIVEMQ_STOMP $ACTIVEMQ_MQTT $ACTIVEMQ_WS $ACTIVEMQ_UI
+
+# 执行supervisord来同时执行多个命令,使用supervisord的可执行路径启动服务
+CMD ["/usr/bin/supervisord"]

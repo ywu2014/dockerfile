@@ -1,0 +1,2 @@
+# how to run a container
+sudo docker run -d -P -v /home/ywu/docker/volumns/activemq/instance1/data:/var/activemq/data/kahadb  --name activemq1 ywu123/testres:ub_activemq5.11.1_v1 

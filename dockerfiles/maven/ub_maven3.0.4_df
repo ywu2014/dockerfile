@@ -1,0 +1,27 @@
+############################################
+# use ywu123/testres:ub_jdk8_v1 as base mirror
+
+# version: ywu123/testres:ub_maven3.0.4_v1
+# desc: 当前版本安装的apache-maven-3.0.4-bin.tar.gz
+# build command: sudo docker build -f ub_maven3.0.4_df -t ywu123/testres:ub_maven3.0.4_v1 .
+############################################
+
+FROM ywu123/testres:ub_jdk8_v1
+MAINTAINER ywu "yejunwu126@126.com"
+ENV REFRESHED_AT 2017-07-22
+
+# 添加maven安装文件,会自动解压
+ADD apache-maven-3.0.4-bin.tar.gz /usr/local/
+
+# 配置环境
+# docker run启动后,环境变量会生效,但是ssh登录的,环境变量不会生效
+ENV MAVEN_HOME /usr/local/apache-maven-3.0.4
+ENV PATH $MAVEN_HOME/bin:$PATH
+
+COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+
+# 开放端口
+EXPOSE 22 
+
+# 执行supervisord来同时执行多个命令,使用supervisord的可执行路径启动服务
+CMD ["/usr/bin/supervisord"]

@@ -81,13 +81,14 @@
         <!-- <persistenceAdapter>
             <kahaDB directory="${activemq.data}/kahadb"/>
         </persistenceAdapter> -->
+
         <persistenceAdapter>
             <replicatedLevelDB
 		directory="${activemq.data}/leveldb"
 		replicas="3"
 		bind="tcp://0.0.0.0:62621"
 		zkAddress="zk1:2181,zk2:2182,zk3:2183"
-		hostname="mq1"
+		hostname="mq2"
 		zkPath="/activemq/leveldb-stores"
 	    />
         </persistenceAdapter>

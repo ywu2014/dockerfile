@@ -1,35 +1,82 @@
 version: '2'
 services:
+    zoo1:
+        image: zookeeper:3.3.6
+        container_name: zk1
+        restart: always
+        ports:
+            - 2181:2181
+        networks:
+            - zk_mq
+        environment:
+            ZOO_MY_ID: 1
+            ZOO_SERVERS: server.1=zoo1:2888:3888 server.2=zoo2:2888:3888 server.3=zoo3:2888:3888
+
+    zoo2:
+        image: zookeeper:3.3.6
+        container_name: zk2
+        restart: always
+        ports:
+            - 2182:2181
+        networks:
+            - zk_mq
+        environment:
+            ZOO_MY_ID: 2
+            ZOO_SERVERS: server.1=zoo1:2888:3888 server.2=zoo2:2888:3888 server.3=zoo3:2888:3888
+
+    zoo3:
+        image: zookeeper:3.3.6
+        container_name: zk3
+        restart: always
+        ports:
+            - 2183:2181
+        networks:
+            - zk_mq
+        environment:
+            ZOO_MY_ID: 3
+            ZOO_SERVERS: server.1=zoo1:2888:3888 server.2=zoo2:2888:3888 server.3=zoo3:2888:3888
     mq1:
         image: ywu123/testres:ub_activemq5.11.1_v2
+        container_name: mq1 
         restart: always
         ports:
             - 8161:8161
             - 62621:62621
             - 61616:61616
+        networks:
+            - zk_mq
         volumes:
             - /home/ywu/docker/volumns/activemq/instance1/data/:/var/activemq/data/
             - /home/ywu/docker/volumns/activemq/instance1/conf/activemq.xml:/usr/local/apache-activemq-5.11.1/conf/activemq.xml
             - /home/ywu/docker/volumns/activemq/instance1/conf/jetty.xml:/usr/local/apache-activemq-5.11.1/conf/jetty.xml
     mq2:
         image: ywu123/testres:ub_activemq5.11.1_v2
+        container_name: mq2 
         restart: always
         ports:
             - 8162:8161
             - 62622:62621
             - 61617:61616
+        networks:
+            - zk_mq
         volumes:
             - /home/ywu/docker/volumns/activemq/instance2/data/:/var/activemq/data/
             - /home/ywu/docker/volumns/activemq/instance2/conf/activemq.xml:/usr/local/apache-activemq-5.11.1/conf/activemq.xml
             - /home/ywu/docker/volumns/activemq/instance2/conf/jetty.xml:/usr/local/apache-activemq-5.11.1/conf/jetty.xml
     mq3:
         image: ywu123/testres:ub_activemq5.11.1_v2
+        container_name: mq3 
         restart: always
         ports:
             - 8163:8161
             - 62623:62621
             - 61618:61616
+        networks:
+            - zk_mq
         volumes:
             - /home/ywu/docker/volumns/activemq/instance3/data/:/var/activemq/data/
             - /home/ywu/docker/volumns/activemq/instance3/conf/activemq.xml:/usr/local/apache-activemq-5.11.1/conf/activemq.xml
             - /home/ywu/docker/volumns/activemq/instance3/conf/jetty.xml:/usr/local/apache-activemq-5.11.1/conf/jetty.xml
+networks:
+    zk_mq:
+        driver: bridge

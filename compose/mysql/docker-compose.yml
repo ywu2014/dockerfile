@@ -1,0 +1,13 @@
+version: '2'
+services:
+    mysql:
+        image: mysql:5.6
+        container_name: mysql
+        restart: always
+        ports:
+            - 3306:3306
+        environment:
+            MYSQL_ROOT_PASSWORD: passw0rd
+        volumes:
+            - /home/ywu/docker/volumns/mysql/default/conf:/etc/mysql/conf.d
+            - /home/ywu/docker/volumns/mysql/default/data:/var/lib/mysql
